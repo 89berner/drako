@@ -1,0 +1,49 @@
+# Launch t4g.medium (2vcpu, 4gb) instances in standard mode, each instance costs 0.25 dollars per day, if we have a max of 10, it would be at most:
+# 60 dollars per month of EKS + 60 dollars of instances = 120 per month
+# Mumbai has the lowest price so we should try it
+
+
+# INSTALL
+
+echo "INSTALL AWS CLI"
+sudo curl --silent --location -o "awscliv2.zip" "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" && sudo unzip awscliv2.zip && sudo ./aws/install
+echo "INSTALL KUBECTL"
+sudo curl -o /usr/local/bin/kubectl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && sudo chmod +x /usr/local/bin/kubectl
+echo "INSTALL EKS TOOL"
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp && sudo mv -v /tmp/eksctl /usr/local/bin
+echo "TEST ALL IS WORKING"
+aws --version && kubectl version && eksctl version
+
+CLUSTER_NAME="recon-spot-cluster"
+REGION="ap-south-1"
+
+echo "CREATING THE CLUSTER"
+# eksctl create cluster --version=1.20 --name=eksspottutorial --nodes=2 --managed --region=<your-desired-region> --node-type t3.medium --asg-access
+eksctl create cluster --version=1.25 --name=$CLUSTER_NAME --nodes=0 --region=$REGION
+# delete the nodes if any were created
+
+aws eks update-kubeconfig --name $CLUSTER_NAME --region $REGION
+
+aws ec2 create-launch-template --launch-template-name recon-spot-launch-template --launch-template-data '{"InstanceType": "t4g.large", "InstanceMarketOptions": {"MarketType": "spot", "SpotOptions": {"MaxPrice": "0.05"}}}'
+
+echo "Now adding a node group of spot instances"
+eksctl create nodegroup --cluster=$CLUSTER_NAME --region=$REGION --managed --spot --name=spot-node-group-arm-2vcpu-4gb --launch-template-name=recon-spot-launch-template --nodes-min=0 --nodes-max=5 --asg-access
+
+# kubectl get nodes --show-labels --selector=eks.amazonaws.com/capacityType=SPOT | grep SPOT
+
+echo "Now setup the cluster autoscaling"
+curl -LO https://raw.githubusercontent.com/kubernetes/autoscaler/master/cluster-autoscaler/cloudprovider/aws/examples/cluster-autoscaler-autodiscover.yaml
+sed -i "s/<YOUR CLUSTER NAME>/$CLUSTER_NAME/g" cluster-autoscaler-autodiscover.yaml
+sed -i 's/v1.17.3/v1.20.0/g' cluster-autoscaler-autodiscover.yaml
+kubectl apply -f cluster-autoscaler-autodiscover.yaml
+
+# INSTALL CONTAINER INSIGHTS
+# curl https://raw.githubusercontent.com/aws-observability/aws-otel-collector/main/deployment-template/eks/otel-container-insights-infra.yaml | kubectl apply -f -
+
+# ADD TO EC2 IAM ROLE FOR NODE CloudWatchAgentServerPolicy
+
+# OPTIONAL METRICS SERVER TO AVOID CLOUDWATCH COSTS
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+# Then to monitor
+kubectl logs -f deployment/cluster-autoscaler -n kube-system | egrep -i "scale_up|scale_down"|egrep -v 'No candidates for scale down|is not suitable for removal|the node is currently being deleted|was unneeded for|unremovable in the last| - cpu utilization |Not deleted yet |nodes found to be unremovable in simulation,|candidates for scale down.'

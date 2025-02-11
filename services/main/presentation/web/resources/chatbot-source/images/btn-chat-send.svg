@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <g id="btn-chat-send" transform="translate(-609 -46)">
+    <rect id="Rectangle_33" data-name="Rectangle 33" width="40" height="40" transform="translate(609 46)" fill="none"/>
+    <g id="paperplane" transform="translate(619.77 54.904)">
+      <path id="Path_17" data-name="Path 17" d="M20.23,10.993a1.855,1.855,0,0,1-1.164,1.615L4.251,20.016a2.34,2.34,0,0,1-1.038.271,1.4,1.4,0,0,1-1.147-.549,1.833,1.833,0,0,1-.18-1.706l1.669-5.567a2.535,2.535,0,0,0,.108-.568H12.8a.9.9,0,1,0,0-1.8H3.664a2.651,2.651,0,0,0-.108-.568L1.887,3.956a1.828,1.828,0,0,1,.18-1.705,1.665,1.665,0,0,1,2.183-.28L19.067,9.378a1.854,1.854,0,0,1,1.163,1.615Z" transform="translate(0 0)" fill="#1373e1"/>
+    </g>
+  </g>
+</svg>

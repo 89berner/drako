@@ -1,0 +1,54 @@
+# docker build -f services/agent-base/Dockerfile.agent.base -t agent-base services/
+# bash init.sh -r script -i scripts/10_11_1_50.script -e oscp
+
+#FROM python:3.8-alpine
+#FROM kalilinux/kali
+FROM kalilinux/kali-last-release
+##-rolling
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV TERM xterm-256color
+
+RUN apt-get update --fix-missing && apt-get install -y software-properties-common && apt-get update -y && apt-get clean all
+RUN apt-get update && apt-get install -y git colordiff colortail unzip vim tmux xterm zsh curl telnet net-tools && apt-get clean all
+
+# INSTALL OTHERS
+# https://pkg.kali.org/pkg/metasploit-framework
+
+RUN apt-get update --fix-missing && apt-get -y install apt-utils exploitdb man-db dirb nikto wpscan uniscan apache2 && apt-get clean all
+
+# ADD POSTGRES REPO
+
+RUN apt-get update && apt-get -y install wget gnupg
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt bullseye-pgdg main" > /etc/apt/sources.list.d/pgdg.list && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && apt-get update
+RUN echo "deb http://security.debian.org/debian-security bullseye-security main" >> /etc/apt/sources.list.d/pgdg.list
+
+
+RUN apt-get update && apt-get install -y postgresql-14 postgresql-contrib-14 postgresql-client-14 #TODO: REVIEW IF I NEED -14
+
+RUN apt-get update && apt-get install -y metasploit-framework=6.1.39-0kali1
+
+# # kali-linux-top10
+
+RUN apt-get update && apt-get install -y python2.7 python3-pip iputils-ping php netcat-traditional iproute2
+RUN ln -s /usr/bin/python3 /usr/bin/python && ln -s /usr/bin/python2.7 /usr/bin/python2
+
+# # INSTALL NEW PYMETASPLOIT VERSION
+
+COPY agent-base/resources/requirements.txt     /app/requirements.txt
+COPY agent-base/resources/requirements_py2.txt /app/requirements_py2.txt
+
+RUN pip3 install --no-cache-dir -r /app/requirements.txt
+RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py && python2.7 get-pip.py && python2.7 -m pip install --no-cache-dir -r /app/requirements_py2.txt
+
+WORKDIR /app
+
+#RUN git clone https://github.com/DanMcInerney/pymetasploit3.git && cd pymetasploit3 && pip3 install . # && python2.7 -m pip install .
+ADD main/exploration/agent/resources/pymetasploit3 /tmp/pymetasploit3
+RUN cd /tmp/pymetasploit3 && python3 -m pip install .
+
+RUN git clone https://github.com/SecureAuthCorp/impacket.git    && cd impacket      && pip3 install . # && python2.7 -m pip install .
+
+ADD agent-base/tools/ /tools
+
+RUN touch /docker-env

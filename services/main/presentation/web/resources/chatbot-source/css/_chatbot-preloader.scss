@@ -1,0 +1,89 @@
+.chatbot-body--discussion .chatbot-preloader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #ffffff;
+  z-index: 10000;
+  padding: 19px 19px 22px 19px;
+
+  span {
+    background-color: #E9E9E9;
+    border-radius: 4px;
+    height: 16px;
+    margin-bottom: 12px;
+    display: block;
+    &:nth-child(1) {
+      width: 0;
+      animation: chatbot-preloader-anim1 3s infinite;
+      animation-timing-function: ease-in-out;
+    }
+    &:nth-child(2) {
+      width: 0;
+      animation: chatbot-preloader-anim2 3s infinite;
+      animation-timing-function: ease-in-out;
+      animation-delay: .5s;
+    }
+    &:nth-child(3) {
+      width: 0;
+      animation: chatbot-preloader-anim3 3s infinite;
+      animation-timing-function: ease-in-out;
+      animation-delay: 1s;
+    }
+  }
+}
+
+@keyframes chatbot-preloader-anim1 {
+  0% {
+    width: 0px;
+  }
+  20% {
+    width: 174px;
+  }
+  80% {
+    width: 174px;
+  }
+  90% {
+    width: 0px;
+  }
+  100% {
+    width: 0px;
+  }
+}
+
+@keyframes chatbot-preloader-anim2 {
+  0% {
+    width: 0px;
+  }
+  20% {
+    width: 96px;
+  }
+  80% {
+    width: 96px;
+  }
+  90% {
+    width: 0px;
+  }
+  100% {
+    width: 0px;
+  }
+}
+
+@keyframes chatbot-preloader-anim3 {
+  0% {
+    width: 0px;
+  }
+  20% {
+    width: 150px;
+  }
+  80% {
+    width: 150px;
+  }
+  90% {
+    width: 0px;
+  }
+  100% {
+    width: 0px;
+  }
+}

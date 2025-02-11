@@ -1,0 +1,7 @@
+profile: EXPLORE_AND_TRAIN
+learner: dqn
+amount_of_agents: 200
+iterate_over_targets: True
+cleanup_db: True
+hours_per_target: 24
+load_main_training: True

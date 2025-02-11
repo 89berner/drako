@@ -1,0 +1,15 @@
+profile:        EXPLORE_AND_TRAIN #EXPLORE_AND_TRAIN
+learner_family: dqn
+learner_name:   PlannerPrioDQN
+agent_name:     GoExplore
+#tester_name:    NNRecommendationTester
+amount_of_agents: 5
+iterate_over_targets: True
+cleanup_db: False 
+hours_per_target: 24 #change
+load_main_training: False
+target_source: hackthebox
+target_id: 6 #optimus
+
+local_training: True
+force_cpu: True # to avoid needing a gpu for parrot

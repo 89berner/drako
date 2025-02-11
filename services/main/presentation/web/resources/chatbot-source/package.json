@@ -1,0 +1,25 @@
+{
+  "name": "drako",
+  "version": "1.0.0",
+  "description": "",
+  "main": "chatbot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@node-minify/core": "^6.2.0",
+    "@node-minify/csso": "^6.2.0",
+    "@node-minify/html-minifier": "^6.2.0",
+    "@node-minify/terser": "^6.2.0",
+    "cheerio": "^1.0.0-rc.5",
+    "datauri": "^3.0.0",
+    "pug": "^3.0.0",
+    "pug-cli": "^1.0.0-alpha6",
+    "sass": "^1.32.8"
+  }
+}

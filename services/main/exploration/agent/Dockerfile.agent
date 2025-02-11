@@ -1,0 +1,44 @@
+# docker build . -t agent-base 
+
+FROM 189166464412.dkr.ecr.eu-west-1.amazonaws.com/agent-base:20220726215514 
+#FROM agent-base
+
+ENV TZ=Europe/Amsterdam
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+ADD shared/resources/metasploit_actions /app/shared/resources/metasploit_actions
+
+COPY exploration/agent/resources/msfdb /usr/bin/msfdb
+RUN chmod +x /usr/bin/msfdb
+
+#COPY exploration/agent/conf/pg_hba.conf        /etc/postgresql/13/main/pg_hba.conf
+#COPY exploration/agent/conf/pg_ctl.conf        /etc/postgresql/13/main/pg_ctl.conf
+#COPY exploration/agent/conf/postgresql_13.conf /etc/postgresql/13/main/postgresql.conf
+
+COPY exploration/agent/conf/pg_hba.conf        /etc/postgresql/14/main/pg_hba.conf
+COPY exploration/agent/conf/pg_ctl.conf        /etc/postgresql/14/main/pg_ctl.conf
+COPY exploration/agent/conf/postgresql_14.conf /etc/postgresql/14/main/postgresql.conf
+
+COPY exploration/agent/conf/apache2.conf       /etc/apache2/apache2.conf
+COPY exploration/agent/conf/ports.conf         /etc/apache2/ports.conf
+COPY exploration/agent/conf/000-default.conf   /etc/apache2/sites-enabled/000-default.conf
+COPY exploration/agent/conf/mpm_prefork.conf   /etc/apache2/sites-enabled/mpm_prefork.conf
+
+RUN /etc/init.d/postgresql start && msfdb reinit
+
+# we use a special version that avoids warnings
+RUN cp /usr/bin/msfrpcd /tmp/msfrpcd.bkp 2>/dev/null
+COPY exploration/agent/resources/msfrpcd_6     /usr/bin/msfrpcd
+RUN chmod +x /usr/bin/msfrpcd
+
+COPY exploration/agent/scripts/msfrpc_check.py /app/scripts/
+
+#https://github.com/rapid7/metasploit-framework/issues/16580
+RUN cd /usr/share/metasploit-framework && echo "gem 'rex-core', '0.1.21'" >> Gemfile && bundle config unset frozen && bundle update rex-core
+
+ADD exploration/agent/resources/playbooks /app/playbooks
+ADD lib                                   /app/lib
+
+COPY exploration/agent/scripts/agent.py exploration/agent/scripts/init.sh /app/
+
+CMD /bin/bash

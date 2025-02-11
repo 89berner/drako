@@ -1,0 +1,5 @@
+flask
+requests==2.24.0
+pyfiglet==0.8.post1
+mysql-connector-python==8.0.22
+pyyaml==6.0

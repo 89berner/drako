@@ -1,0 +1,7 @@
+profile: TRAIN
+learner_family: dqn
+learner_name:   SimpleDQN
+cleanup_db: False
+load_main_training: True
+training_id: 1
+continue_from_latest_point: False # So it starts from scratch no matter how far the previous one went

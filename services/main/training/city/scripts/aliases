@@ -1,0 +1,7 @@
+alias start_recon="python3 /root/drako/services/main/training/city/scripts/start_recon_vm.py"
+alias start-recon="python3 /root/drako/services/main/training/city/scripts/start_recon_vm.py"
+alias enter-vm="bash /root/drako/scripts/city/enter_vm.sh"
+
+alias stop_and_remove_all_containers="docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q);"
+
+bash scripts/local/truncate_recon.sh most

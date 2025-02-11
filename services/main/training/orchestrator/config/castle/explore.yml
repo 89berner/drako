@@ -1,0 +1,15 @@
+profile: EXPLORE
+learner_family: dqn
+learner_name:   DQN
+agent_name:     GoExplore
+# tester_name:    NNRecommendationTester
+amount_of_agents: 100
+iterate_over_targets: False
+target_id: 6 #lame
+target_source: hackthebox
+
+cleanup_db: False
+hours_per_target: 24
+
+local_training: True
+force_cpu: True # to avoid needing a gpu for parrot

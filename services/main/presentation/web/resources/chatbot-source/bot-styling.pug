@@ -1,0 +1,113 @@
+doctype html
+html(lang='en')
+  head
+    meta(http-equiv='Content-Type' content='text/html' charset='utf-8')
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width,minimum-scale=1,initial-scale=1,user-scalable=no')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title Drako.ai chatbot
+    // link(rel="stylesheet", href="css/chatbot.css?v=1")
+
+  body
+    // -> .minimized / .maximized
+    // -> .inputline (Muestra el input)
+    .chatbot.maximized.inputline
+      style
+        include css/chatbot.css
+      .chatbot-container 
+
+        // TOGGLE
+        .chatbot-toggle 
+          .chatbot-toggle--minimized 
+          .chatbot-toggle--maximized 
+            .title
+              img(src='images/drakobot-tagline.svg')
+
+        // BODY
+        .chatbot-body
+          .chatbot-body--discussion
+            // Chat Preloader
+            //.chatbot-preloader.hide
+              span
+              span 
+              span
+            // Message Bot - Basic
+            .discussion-message.discussion-message--bot
+              .avatar
+                img(src='images/bot-avatar.svg')
+              .message-body
+                .message 
+                  .message-text 
+                    | Hi! 👋 Let me know if you need help to hack a machine!
+                .timestamp 12m ago
+            // Message Bot - Options
+            .discussion-message.discussion-message--bot
+              .avatar
+                img(src='images/bot-avatar.svg')
+              .message-body
+                .message 
+                  .message-text 
+                    | Let me understand your need a bit better. You want me to help you...
+                  .message-options 
+                    .message-option Hack into your car 
+                    .message-option Drive safe 
+                    .message-option Make a call 
+                    .message-option Order takeaway
+                .timestamp 12m ago
+            // Message Bot - Options - One option selected
+            .discussion-message.discussion-message--bot
+              .avatar
+                img(src='images/bot-avatar.svg')
+              .message-body
+                .message 
+                  .message-text 
+                    | Let me understand your need a bit better. You want me to help you...
+                  // -> .disabled
+                  .message-options.disabled 
+                    .message-option Hack into your car 
+                    .message-option.selected Drive safe 
+                    .message-option Make a call 
+                    .message-option Order takeaway
+                .timestamp 12m ago
+            // Message User - Basic
+            .discussion-message.discussion-message--user
+              .message 
+                .message-text
+                  | Yes, indeed! I've locked myself out of my smartcar, can you help me get back in!?
+              .timestamp 12m ago
+            // Message User - File attached
+            .discussion-message.discussion-message--user
+              .message 
+                .message-attachment ListOfMACAddresses.csv
+              .timestamp 12m ago
+            // End of chat
+            .discussion-end End of chat session
+            // Message Preloader
+            .chatbot-message-preloader.dots
+              div
+
+          // INPUT AREA --------------------------------- //  
+          .chatbot-body--inputline
+            // Input - Text
+            // -> .show
+            .inputline-text
+              .input-wrapper
+                input(type='text', name='chatbot-input-text', id='chatbot-input-text')
+                .input-placeholder Type here...
+                .input-btn-sendmessage
+            // Input - Options
+            // -> .show
+            .inputline-options.show
+              input#input-attachment.input-attachment-hidden(type='file')
+              .input-option.input-option--secondary Decline 
+              .input-option.input-option--primary.input-option--attachment
+                img(src='images/btn-input-attach.svg' width='16px' height='15.144px')
+                span Attach a file 
+            // Input - Attachment
+            // -> .show
+            .inputline-attachment
+              .input-wrapper
+                .input-attachment
+                  .text ListOfMACAddresses.csv
+                  .input-btn-attachmentremove
+                .input-btn-sendmessage

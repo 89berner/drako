@@ -1,0 +1,8 @@
+flask
+requests
+boto3
+mysql-connector-python==8.0.22
+dictdiffer==0.8.1
+numpy==1.17.3
+flask-cors
+pyfiglet==0.8.post1

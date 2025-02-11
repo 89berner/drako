@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+  <g id="toggle-minimized" transform="translate(-22 -22)">
+    <rect id="Rectangle_30" data-name="Rectangle 30" width="36" height="36" transform="translate(22 22)" fill="none"/>
+    <g id="chat_1_" data-name="chat (1)" transform="translate(21 21)">
+      <path id="Path_31" data-name="Path 31" d="M28.818,1H9.182A8.191,8.191,0,0,0,1,9.182V22.273a8.2,8.2,0,0,0,6.545,8.017v5.074a1.637,1.637,0,0,0,2.545,1.361L19.5,30.455h9.322A8.191,8.191,0,0,0,37,22.273V9.182A8.191,8.191,0,0,0,28.818,1ZM18.092,27.457l-7.274,4.849V28.818a1.637,1.637,0,0,0-1.636-1.636,4.915,4.915,0,0,1-4.909-4.909V9.182A4.915,4.915,0,0,1,9.182,4.273H28.818a4.915,4.915,0,0,1,4.909,4.909V22.273a4.915,4.915,0,0,1-4.909,4.909H19a1.6,1.6,0,0,0-.908.275Z" fill="#fff"/>
+      <path id="Path_32" data-name="Path 32" d="M26.273,7H6.636a1.636,1.636,0,0,0,0,3.273H26.273a1.636,1.636,0,0,0,0-3.273Z" transform="translate(2.545 3.818)" fill="#fff"/>
+      <path id="Path_33" data-name="Path 33" d="M21.727,11H8.636a1.636,1.636,0,1,0,0,3.273H21.727a1.636,1.636,0,0,0,0-3.273Z" transform="translate(3.818 6.364)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

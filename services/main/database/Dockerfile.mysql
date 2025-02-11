@@ -1,0 +1,22 @@
+# sudo docker build -t mysql-dragon -f services/main/database/Dockerfile.mysql services/main/database/
+# sudo docker run --net=host -d -v /mysql:/var/lib/mysql --name mysql mysql-dragon
+# sudo mkdir -p /tmp/mysql && sudo chmod 777 /tmp/mysql && sudo docker run --net=host -d -v /tmp/mysql:/var/lib/mysql --name mysql mysql-dragon ### FOR LOCAL
+
+# RUN cd /var/lib/mysql && rm * && mysqld --initialize --console # FOR LOCAL DEV
+
+# cat resources/recon_latest.sql | mysql -h 127.0.0.1 -u root -P 6612 -p recon
+
+FROM mysql:latest
+
+ENV MYSQL_TCP_PORT=6612
+ENV MYSQL_ROOT_PASSWORD="gsmpom3943odhasoi13"
+
+#RUN echo 'CREATE DATABASE IF NOT EXISTS dragon_test; CREATE DATABASE IF NOT EXISTS dragon_staging; CREATE DATABASE IF NOT EXISTS dragon;' > /docker-entrypoint-initdb.d/init.sql;
+
+ADD city.cnf /etc/mysql/conf.d/config.cnf
+
+# ADD dragon_prod_latest.sql /docker-entrypoint-initdb.d/dragon_prod_latest.sql
+# RUN sed -i '1 i\CREATE DATABASE IF NOT EXISTS dragon_test; CREATE DATABASE IF NOT EXISTS dragon_staging; CREATE DATABASE IF NOT EXISTS dragon; use dragon;' /docker-entrypoint-initdb.d/dragon_prod_latest.sql
+
+# IMPOORTANT ! ON THE FIRST TIME REMOVE COMMENT OUT THE CMD SO IT INITIALIZES THE DB
+CMD mysqld --disable-log-bin

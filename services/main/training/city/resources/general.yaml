@@ -1,0 +1,8 @@
+- 
+  id: 1
+  name: Metasploitable
+  description: https://freedomben.medium.com/converting-rapid7s-metasploitable-2-vm-from-vmware-to-kvm-d964fba63cb6
+  disk_url: http://downloads.metasploit.com/data/metasploitable/metasploitable-linux-2.0.0.zip
+  disk_type: qcow2
+  vmdk_disk: /var/lib/libvirt/images/Metasploitable2-Linux/Metasploitable.vmdk
+  vmdk_config: /var/lib/libvirt/images/Metasploitable2-Linux/Metasploitable.vmx

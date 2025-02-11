@@ -1,0 +1,27 @@
+# docker build -t learner -f services/main/training/learner/Dockerfile.learner services/main/
+# docker run --gpus all -it -v /share:/share --network host -t learner
+# docker run -it -v /share:/share --network host -t learner
+# python3 drako.py --log-level=2 --runner=learner --learner=dqn --game_type=NETWORK --training_id=1 --load_main_training=False
+
+FROM ubuntu:20.04
+
+ENV TZ=Europe/Amsterdam
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update && apt-get install -y python3.8 python3-pip htop git
+
+RUN rm /usr/bin/python3 && ln -s /usr/bin/python3.8 /usr/bin/python3
+
+ADD training/learner/resources/requirements.txt /app/requirements.txt
+
+RUN python3 -m pip install --no-cache-dir -r /app/requirements.txt
+
+ADD shared/resources/metasploit_actions /app/shared/resources/metasploit_actions
+
+ADD  lib /app/lib
+COPY training/learner/scripts/learner.py training/learner/scripts/learner.sh /app/
+
+RUN echo "ubuntu" >> /root/os
+
+WORKDIR /app
+CMD /bin/bash learner.sh

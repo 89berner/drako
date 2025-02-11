@@ -1,0 +1,76 @@
+//- doctype html
+//- html(lang='en')
+//-   head
+//-     meta(http-equiv='Content-Type' content='text/html' charset='utf-8')
+//-     meta(charset='UTF-8')
+//-     meta(name='viewport', content='width=device-width,minimum-scale=1,initial-scale=1,user-scalable=no')
+//-     meta(http-equiv='X-UA-Compatible', content='ie=edge')
+//-     title Drako.ai chatbot
+//-     script(src="chatbot.js")
+//-     // link(rel="stylesheet", href="css/chatbot.css?v=1")
+//- -> .minimized / .maximized
+//- -> .inputline (Muestra el input)
+.chatbot.minimized.inputline
+  //- CSS: this will be replaced in the buildscript -//
+  style.
+    //- injected css goes here
+  //- end CSS -//
+
+  .chatbot-container 
+    // TOGGLE
+    .chatbot-toggle 
+      .chatbot-toggle--minimized 
+      .chatbot-toggle--maximized 
+        .title
+          img(src='images/drakobot-tagline.svg')
+
+    // BODY
+    .chatbot-body
+      .chatbot-body--discussion
+        // Chat Preloader
+        .chatbot-preloader
+          span
+          span 
+          span
+        // Message Bot - Basic
+        .chatbot-messages
+          .discussion-message-template.discussion-message
+            .avatar
+              img(src='images/bot-avatar.svg')
+            .message-body
+              .message
+                .message-attachment attachment
+                .message-text message-text
+                .message-options 
+                  // .message-option message-option
+              .timestamp
+          // End of chat
+        .discussion-end End of chat session
+        .chatbot-message-preloader.dots.hidden
+          div
+
+      // INPUT AREA --------------------------------- //  
+      .chatbot-body--inputline
+        // Input - Text
+        // -> .show
+        .inputline-text.show
+          .input-wrapper
+            input(type='text', name='chatbot-input-text', id='chatbot-input-text')
+            .input-placeholder Type here...
+            .input-btn-sendmessage
+        // Input - Options
+        // -> .show
+        .inputline-options
+          input#input-attachment.input-attachment-hidden(type='file')
+          .input-option.input-option--secondary Decline 
+          .input-option.input-option--primary.input-option--attachment
+            img(src='images/btn-input-attach.svg' width='16px' height='15.144px')
+            span Attach a file 
+        // Input - Attachment
+        // -> .show
+        .inputline-attachment
+          .input-wrapper
+            .input-attachment
+              .text
+              .input-btn-attachmentremove
+            .input-btn-sendmessage

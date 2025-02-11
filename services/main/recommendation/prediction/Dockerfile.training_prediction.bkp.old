@@ -1,0 +1,46 @@
+# docker build -t training_prediction -f Dockerfile.training_prediction . && docker run --gpus all -it -v /share:/share --network host -t training_prediction
+
+#FROM nvidia/cuda:10.2-base
+FROM ubuntu:18.04
+
+ENV TZ=Europe/Amsterdam
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+#RUN rm /etc/apt/sources.list.d/cuda.list
+#RUN rm /etc/apt/sources.list.d/nvidia-ml.list
+
+#RUN apt-get update && apt-get install -y python3.8 python3.8-dev python3-pip htop git build-essential libssl-dev libffi-dev libxml2-dev libxslt1-dev zlib1g-dev graphviz libgraphviz-dev pkg-config
+
+RUN apt-get update && apt-get install -y python3-pip htop git build-essential libssl-dev libffi-dev libxml2-dev libxslt1-dev zlib1g-dev graphviz libgraphviz-dev pkg-config
+
+#RUN rm /usr/bin/python3 && ln -s /usr/bin/python3.8 /usr/bin/python3 && echo "done"
+
+ADD recommendation/prediction/resources/requirements_start.txt    /app/requirements_start.txt
+
+ADD shared/resources/metasploit_actions                  /app/shared/resources/metasploit_actions
+
+RUN apt-get update && apt-get install libjpeg8-dev zlib1g-dev libtiff-dev libfreetype6 libfreetype6-dev libwebp-dev libopenjp2-7-dev libopenjp2-7-dev -y
+
+RUN python3 -m pip install -r /app/requirements_start.txt
+
+RUN python3 -m pip install -U setuptools
+#RUN apt-get install python3-setuptools
+
+ADD recommendation/prediction/resources/requirements_middle.txt   /app/requirements_middle.txt
+RUN python3 -m pip install -r /app/requirements_middle.txt
+
+RUN git clone https://github.com/DanMcInerney/pymetasploit3.git && cd pymetasploit3 && python3 -m pip install .
+
+ADD recommendation/prediction/resources/requirements_end.txt      /app/requirements_end.txt
+RUN python3 -m pip install -r /app/requirements_end.txt
+
+RUN python3 -m pip install msgpack==1.0.4
+
+ADD lib /app/lib
+
+COPY recommendation/prediction/scripts/training_prediction.py /app/training_prediction.py
+
+#RUN touch lib/__init__.py && touch lib/Recommendation/__init__.py
+
+WORKDIR /app
+CMD python3 training_prediction.py

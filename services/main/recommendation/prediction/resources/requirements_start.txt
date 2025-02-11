@@ -1,0 +1,10 @@
+# below are for graphs
+mysql-connector-python==8.0.22
+dictdiffer==0.8.1
+numpy==1.17.3
+python-resize-image==1.1.20
+networkx==2.5
+matplotlib==3.3.2
+imageio==2.9.0
+pygraphviz==1.6
+pyfiglet==0.8.post1

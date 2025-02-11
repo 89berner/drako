@@ -1,0 +1,26 @@
+FROM ubuntu:22.04
+
+ENV TZ=Europe/Amsterdam
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update && apt-get install -y python3 python3-dev python3-pip htop git gunicorn nano libvirt-clients qemu-utils uuid-runtime virtinst
+
+ADD training/city/resources/requirements.txt /app/resources/requirements.txt
+
+RUN python3 -m pip install -U setuptools
+#RUN apt-get install python3-setuptools
+
+RUN python3 -m pip install -r /app/resources/requirements.txt
+
+ADD training/city/resources/ /app/resources/
+ADD lib /app/lib
+
+COPY training/city/scripts/manager.py        /app/manager.py
+COPY training/city/scripts/gunicorn.sh       /app/gunicorn.sh
+COPY training/city/scripts/vmware2libvirt.py /app/vmware2libvirt.py
+
+#RUN touch lib/__init__.py && touch lib/Recommendation/__init__.py
+
+WORKDIR /app
+#CMD python3 training_prediction.py
+CMD /app/gunicorn.sh

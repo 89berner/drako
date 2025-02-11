@@ -1,0 +1,42 @@
+# docker rm -f $(docker ps -f name=vpn|tail -1|cut -d ' ' -f 1) ;docker build -t vpn -f services/main/exploration/vpn/Dockerfile.vpn services/main && docker run --dns=8.8.8.8 --cap-add NET_ADMIN -it -t vpn
+
+
+FROM ubuntu:22.04
+
+ENV TZ=Europe/Amsterdam
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update && apt-get install -y curl net-tools wget openvpn ufw inetutils-ping ssh nmap
+
+RUN wget -O /tmp/nordrepo.deb https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/nordvpn-release_1.0.0_all.deb && apt install -y /tmp/nordrepo.deb && apt-get update && apt-get install -y nordvpn
+
+RUN mkdir -p /run/nordvpn/
+
+COPY exploration/vpn/nl881tcp.conf      /etc/openvpn/nl881tcp.conf
+COPY exploration/vpn/nl882tcp.conf      /etc/openvpn/nl882tcp.conf 
+COPY exploration/vpn/nl883tcp.conf      /etc/openvpn/nl883tcp.conf 
+COPY exploration/vpn/nl978tcp.conf      /etc/openvpn/nl978tcp.conf 
+COPY exploration/vpn/nl993tcp.conf      /etc/openvpn/nl993tcp.conf 
+COPY exploration/vpn/nl1008tcp.conf     /etc/openvpn/nl1008tcp.conf 
+COPY exploration/vpn/aws.conf           /etc/openvpn/aws.conf 
+COPY exploration/vpn/hetzner.conf       /etc/openvpn/hetzner.conf 
+COPY exploration/vpn/protonnl30udp.conf /etc/openvpn/protonnl30udp.conf
+
+COPY exploration/vpn/passwdprotonvpn  /etc/openvpn/passwdprotonvpn 
+COPY exploration/vpn/passwdnordvpn    /etc/openvpn/passwdnordvpn 
+COPY exploration/vpn/passwdaws        /etc/openvpn/passwdaws
+COPY exploration/vpn/passwdhetzner    /etc/openvpn/passwdhetzner
+COPY exploration/vpn/run_vpn.sh       /app/run_vpn.sh
+COPY exploration/vpn/after.rules         /etc/ufw/after.rules
+COPY exploration/vpn/vpn_healthcheck.sh  /app/vpn_healthcheck.sh
+
+RUN chmod +x /app/run_vpn.sh
+RUN chmod +x /app/vpn_healthcheck.sh
+
+WORKDIR /app
+# CMD /bin/bash
+
+# HEALTHCHECK --start-period=120s --retries=6 --interval=30s --timeout=2s CMD sh -c "IP=$(curl -LSs 'https://ratedby.app/givemetheippleasenow' | tr -d '\n'); if [ -z '$IP' ] || [ '$IP' = '178.84.132.195' ]; then exit 1; fi"
+HEALTHCHECK --start-period=120s --retries=10 --interval=30s --timeout=4s CMD /app/vpn_healthcheck.sh || exit 1
+
+CMD /app/run_vpn.sh

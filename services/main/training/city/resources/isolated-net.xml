@@ -1,0 +1,11 @@
+<network connections='1'>
+  <name>isolated</name>
+  <uuid>5885cb5e-6597-4718-b4c5-ebe123b3a276</uuid>
+  <bridge name='virbr1' stp='on' delay='0' />
+  <mac address='86:7d:70:b1:75:64'/>
+  <ip address='10.4.4.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='10.4.4.2' end='10.4.4.253' />
+    </dhcp>
+    </ip>
+</network>

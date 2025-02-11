@@ -1,0 +1,7 @@
+mysql-connector-python==8.0.22
+requests==2.24.0
+dictdiffer==0.8.1
+numpy==1.22.4 #1.17.3
+pyfiglet==0.8.post1
+docker==5.0.3
+pyyaml==6.0
